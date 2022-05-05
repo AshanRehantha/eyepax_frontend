@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import { useQuery } from 'react-query';
 import './App.css';
+import { Carousels } from './components/Carousel';
+import { get_request } from './settings/axiosRequest';
 
 function App() {
+  const fetchSliderData = async () => {
+    const response = await (get_request('http://localhost:3600/api/carousel/?slides=5'));
+    return response.data.data;
+  }
+  const { isLoading, error, data } = useQuery("UpcomingMovie", fetchSliderData);
+
+  if(isLoading) {
+    return <div>Loading</div>
+  }
+
+  console.log(data.slider);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Carousels
+        slider={data.slider}
+        infinite={true}
+      />
     </div>
   );
 }
