@@ -13,8 +13,6 @@ function App() {
   if(isLoading) {
     return <div>Loading</div>
   }
-
-  console.log(data.slider);
   return (
     <div className="App">
       <Carousels
